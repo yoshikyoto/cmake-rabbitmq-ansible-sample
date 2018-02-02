@@ -1,0 +1,22 @@
+---
+- name: cmakeのためにgcc-c++をインストール
+  yum: name=gcc-c++ state=latest
+
+# {{ host }} は適当に書き換える
+- name: cmakeのダウンロード
+  get_url:
+    url=http://{{ host }}/cmake-2.8.12.2.tar.gz
+    dest=/usr/local/src/
+
+- unarchive:
+    src: /usr/local/src/cmake-2.8.12.2.tar.gz
+    dest: /usr/local/src/
+    remote_src: yes
+
+- name: cmakeのインストール
+  shell: |
+    ./bootstrap
+    gmake
+    make install
+  args:
+    chdir: /usr/local/src/cmake-2.8.12.2

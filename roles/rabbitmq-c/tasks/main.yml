@@ -1,0 +1,21 @@
+---
+# host は適当に書き換えて
+- name: download rabbitmq-client
+  get_url:
+    url: http://{{ host }}/rabbitmq-c-0.5.0.tar.gz
+    dest: /usr/local/src/
+
+- unarchive:
+    src: /usr/local/src/rabbitmq-c-0.5.0.tar.gz
+    dest: /usr/local/src/
+    remote_src: yes
+
+# ビルド方法参考: https://github.com/alanxz/rabbitmq-c
+- name: install rabbtmq-client
+  shell: |
+    mkdir -p build
+    cd build
+    /usr/local/bin/cmake ..
+    /usr/local/bin/cmake --build .
+  args:
+    chdir: /usr/local/src/rabbitmq-c-0.5.0
